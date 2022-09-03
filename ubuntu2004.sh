@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/bash
 
 #### Some critical information
 printf "==========Welcome to 牛津小马哥 的脚本=========\n"
@@ -7,8 +7,10 @@ printf "|       Ubuntu20.04自动Wordpress搭建脚本      |\n"
 printf "|                                             |\n"
 printf "===============================================\n"
 
-read -p "请输入你的域名：" domain < /dev/tty
+read -p "请输入你的域名（例如xmg180.com）：" domain < /dev/tty
 read -p "请输入你的邮箱：" email < /dev/tty
+printf "是否创建SSL（如果需要，则请确认你已经配置好了域名解析至本服务器）：\n"
+read -p "输入y/Y创建SSL，其它为不创建" needSsl < /dev/tty
 
 echo "domain: ${domain}"
 echo "email: ${email}"
@@ -122,7 +124,10 @@ sudo a2dissite 000-default && sudo a2enmod rewrite && sudo a2enmod rewrite && su
 ##### Certbot for SSL
 sudo apt install certbot python3-certbot-apache -y
 sudo ufw allow 'Apache Full' && sudo ufw delete allow 'Apache'
-sudo certbot --apache --non-interactive --no-eff-email --agree-tos --redirect -m $email --domain $domain --domain "www.$domain"
+if  [[ $needSsl == "y" ]] || [[ $needSsl == "Y" ]] ;
+then
+        sudo certbot --apache --non-interactive --no-eff-email --agree-tos --redirect -m $email --domain $domain --domain "www.$domain"
+fi
 
 ######Display generated passwords to log file.
 printf "===============================================\n"
@@ -132,7 +137,14 @@ printf "|                 xmg180.com                  |\n"
 printf "|       了解他，一起学跨境电商，学编程        |\n"
 printf "|                                             |\n"
 printf "===============================================\n"
-echo "你的网站: " "https://${domain}"
+
+if  [[ $needSsl == "y" ]] || [[ $needSsl == "Y" ]] ;
+then
+        echo "你的网站: " "https://${domain}"
+else
+        echo "你的网站: " "http://${domain}"
+fi
+
 echo "你的SSL绑定邮箱: " $email
 echo "数据库名称 Db: " $db_name
 echo "数据库用户名 User: " $db_user
