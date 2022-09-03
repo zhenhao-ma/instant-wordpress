@@ -7,8 +7,8 @@ printf "|       Ubuntu20.04自动Wordpress搭建脚本      |\n"
 printf "|                                             |\n"
 printf "===============================================\n"
 
-read -p "请输入你的域名：\n" domain
-read -p "请输入你的邮箱：\n" email
+read -p "请输入你的域名：" domain
+read -p "请输入你的邮箱：" email
 
 
 install_dir="/var/www/html"
