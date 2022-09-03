@@ -7,9 +7,11 @@ printf "|       Ubuntu20.04自动Wordpress搭建脚本      |\n"
 printf "|                                             |\n"
 printf "===============================================\n"
 printf "请输入你的域名：\n"
-read domain
+read -p "" domain
+sleep 1
 printf "请输入你的邮箱：\n"
-read email
+read -p "" email
+sleep 1
 
 install_dir="/var/www/html"
 #### Creating Random WP Database Credenitals
