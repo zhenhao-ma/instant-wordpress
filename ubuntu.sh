@@ -3,7 +3,7 @@
 #### Some critical information
 printf "==========Welcome to 牛津小马哥 的脚本=========\n"
 printf "|                                             |\n"
-printf "|       Ubuntu20.04自动Wordpress搭建脚本      |\n"
+printf "|       Ubuntu自动Wordpress搭建脚本           |\n"
 printf "|                                             |\n"
 printf "===============================================\n"
 
