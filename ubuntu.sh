@@ -53,7 +53,7 @@ echo "password="$mysqlrootpass>>/root/.my.cnf
 ####Install PHP
 apt -y install php php-bz2 php-mysqli php-curl php-gd php-intl php-common php-mbstring php-xml
 
-sed -i '0,/AllowOverride\ None/! {0,/AllowOverride\ None/ s/AllowOverride\ None/AllowOverride\ All/}' /etc/apache2/apache2.conf #Allow htaccess usage
+# sed -i '0,/AllowOverride\ None/! {0,/AllowOverride\ None/ s/AllowOverride\ None/AllowOverride\ All/}' /etc/apache2/apache2.conf #Allow htaccess usage
 
 systemctl restart apache2
 
@@ -106,24 +106,24 @@ curl https://api.wordpress.org/secret-key/1.1/salt/ >> $install_dir/wp-config.ph
 
 
 ##### Config Apache
-# echo "<VirtualHost *:80>
-#     ServerName ${domain}
-#     ServerAlias www.${domain}
-#     ServerAdmin webmaster@localhost
-#     DocumentRoot ${install_dir}
-#     ErrorLog ${APACHE_LOG_DIR}/error.log
-#     CustomLog ${APACHE_LOG_DIR}/access.log combined
-#     <Directory ${install_dir}>
-# 	    AllowOverride All
-#     </Directory>
-# </VirtualHost>" > "/etc/apache2/sites-available/$domain.conf"
-#
-# sudo a2ensite $domain
-# sudo a2dissite 000-default && sudo a2enmod rewrite && sudo a2enmod rewrite && sudo apache2ctl configtest && sudo systemctl restart apache2
+echo "<VirtualHost *:80>
+    ServerName ${domain}
+    ServerAlias www.${domain}
+    ServerAdmin webmaster@localhost
+    DocumentRoot ${install_dir}
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    <Directory ${install_dir}>
+	    AllowOverride All
+    </Directory>
+</VirtualHost>" > "/etc/apache2/sites-available/$domain.conf"
+
+sudo a2ensite $domain
+sudo a2dissite 000-default && sudo a2enmod rewrite && sudo a2enmod rewrite && sudo apache2ctl configtest && sudo systemctl restart apache2
 
 ##### Certbot for SSL
-# sudo apt install certbot python3-certbot-apache -y
-# sudo ufw allow 'Apache Full' && sudo ufw delete allow 'Apache'
+sudo apt install certbot python3-certbot-apache -y
+sudo ufw allow 'Apache Full' && sudo ufw delete allow 'Apache'
 # if  [[ $needSsl == "y" ]] || [[ $needSsl == "Y" ]] ;
 # then
 #         sudo certbot --apache --non-interactive --no-eff-email --agree-tos --redirect -m $email --domain $domain --domain "www.$domain"
