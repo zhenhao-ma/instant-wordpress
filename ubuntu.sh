@@ -106,20 +106,20 @@ grep -A50 'table_prefix' $install_dir/wp-config.php > /tmp/wp-tmp-config
 
 
 ##### Config Apache
-echo "<VirtualHost *:80>
-    ServerName ${domain}
-    ServerAlias www.${domain}
-    ServerAdmin webmaster@localhost
-    DocumentRoot ${install_dir}
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-    <Directory ${install_dir}>
-	    AllowOverride All
-    </Directory>
-</VirtualHost>" > "/etc/apache2/sites-available/$domain.conf"
-
-sudo a2ensite $domain
-sudo a2dissite 000-default && sudo a2enmod rewrite && sudo a2enmod rewrite && sudo apache2ctl configtest && sudo systemctl restart apache2
+# echo "<VirtualHost *:80>
+#     ServerName ${domain}
+#     ServerAlias www.${domain}
+#     ServerAdmin webmaster@localhost
+#     DocumentRoot ${install_dir}
+#     ErrorLog ${APACHE_LOG_DIR}/error.log
+#     CustomLog ${APACHE_LOG_DIR}/access.log combined
+#     <Directory ${install_dir}>
+# 	    AllowOverride All
+#     </Directory>
+# </VirtualHost>" > "/etc/apache2/sites-available/$domain.conf"
+#
+# sudo a2ensite $domain
+# sudo a2dissite 000-default && sudo a2enmod rewrite && sudo a2enmod rewrite && sudo apache2ctl configtest && sudo systemctl restart apache2
 
 ##### Certbot for SSL
 # sudo apt install certbot python3-certbot-apache -y
