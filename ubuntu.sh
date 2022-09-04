@@ -131,6 +131,24 @@ then
         sudo certbot --apache --non-interactive --no-eff-email --agree-tos --redirect -m $email --domain $domain --domain "www.$domain"
 fi
 
+#### change php.ini
+echo "Start to replace necessary config from php.ini"
+upload_max_filesize=240M
+post_max_size=240M
+memory_limit=1024M
+max_execution_time=600
+max_input_time=600
+max_input_vars=5000
+for i in $(find /etc/ -name php.ini); do # Not recommended, will break on whitespace
+    echo "found $i"
+    for key in upload_max_filesize post_max_size max_execution_time max_input_time memory_limit max_input_vars
+    do
+     sed -i "s/^\($key\).*/\1 $(eval echo = \${$key})/" $i
+    done
+done
+
+
+
 sudo systemctl restart apache2
 
 ######Display generated passwords to log file.
