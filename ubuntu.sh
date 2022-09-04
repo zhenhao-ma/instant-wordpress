@@ -7,13 +7,13 @@ printf "|       Ubuntu自动Wordpress搭建脚本           |\n"
 printf "|                                             |\n"
 printf "===============================================\n"
 
-read -p "请输入你的域名（例如xmg180.com）：" domain < /dev/tty
-read -p "请输入你的邮箱（用于生成ssl，绑定lets encrypt）：" email < /dev/tty
-printf "是否创建SSL（如果需要，则请确认你已经配置好了域名解析至本服务器）：\n"
-read -p "输入y/Y创建SSL，其它为不创建" needSsl < /dev/tty
-
-echo "domain: ${domain}"
-echo "email: ${email}"
+# read -p "请输入你的域名（例如xmg180.com）：" domain < /dev/tty
+# read -p "请输入你的邮箱（用于生成ssl，绑定lets encrypt）：" email < /dev/tty
+# printf "是否创建SSL（如果需要，则请确认你已经配置好了域名解析至本服务器）：\n"
+# read -p "输入y/Y创建SSL，其它为不创建" needSsl < /dev/tty
+#
+# echo "domain: ${domain}"
+# echo "email: ${email}"
 
 install_dir="/var/www/html"
 #### Creating Random WP Database Credenitals
