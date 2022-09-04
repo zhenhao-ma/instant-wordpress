@@ -131,6 +131,8 @@ then
         sudo certbot --apache --non-interactive --no-eff-email --agree-tos --redirect -m $email --domain $domain --domain "www.$domain"
 fi
 
+sudo systemctl restart apache2
+
 ######Display generated passwords to log file.
 printf "===============================================\n"
 printf "|                                             |\n"
