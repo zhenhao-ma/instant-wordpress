@@ -122,12 +122,12 @@ sudo a2ensite $domain
 sudo a2dissite 000-default && sudo a2enmod rewrite && sudo a2enmod rewrite && sudo apache2ctl configtest && sudo systemctl restart apache2
 
 ##### Certbot for SSL
-sudo apt install certbot python3-certbot-apache -y
-sudo ufw allow 'Apache Full' && sudo ufw delete allow 'Apache'
-if  [[ $needSsl == "y" ]] || [[ $needSsl == "Y" ]] ;
-then
-        sudo certbot --apache --non-interactive --no-eff-email --agree-tos --redirect -m $email --domain $domain --domain "www.$domain"
-fi
+# sudo apt install certbot python3-certbot-apache -y
+# sudo ufw allow 'Apache Full' && sudo ufw delete allow 'Apache'
+# if  [[ $needSsl == "y" ]] || [[ $needSsl == "Y" ]] ;
+# then
+#         sudo certbot --apache --non-interactive --no-eff-email --agree-tos --redirect -m $email --domain $domain --domain "www.$domain"
+# fi
 
 ######Display generated passwords to log file.
 printf "===============================================\n"
