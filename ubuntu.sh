@@ -55,7 +55,7 @@ apt -y install php php-bz2 php-mysqli php-curl php-gd php-intl php-common php-mb
 
 # sed -i '0,/AllowOverride\ None/! {0,/AllowOverride\ None/ s/AllowOverride\ None/AllowOverride\ All/}' /etc/apache2/apache2.conf #Allow htaccess usage
 
-# systemctl restart apache2
+systemctl restart apache2
 
 ####Download and extract latest WordPress Package
 if test -f /tmp/latest.tar.gz
@@ -80,18 +80,18 @@ cat << EOF >> $install_dir/wp-config.php
 define('FS_METHOD', 'direct');
 EOF
 
-cat << EOF >> $install_dir/.htaccess
-# BEGIN WordPress
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase /
-RewriteRule ^index.php$ – [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
-</IfModule>
-# END WordPress
-EOF
+# cat << EOF >> $install_dir/.htaccess
+# # BEGIN WordPress
+# <IfModule mod_rewrite.c>
+# RewriteEngine On
+# RewriteBase /
+# RewriteRule ^index.php$ – [L]
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule . /index.php [L]
+# </IfModule>
+# # END WordPress
+# EOF
 
 chown www-data: $install_dir -R
 
