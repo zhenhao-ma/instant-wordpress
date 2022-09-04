@@ -7,15 +7,17 @@ printf "|       Ubuntu自动Wordpress搭建脚本           |\n"
 printf "|                                             |\n"
 printf "===============================================\n"
 #
-# read -p "请输入你的域名（例如xmg180.com）：" domain < /dev/tty
-# read -p "请输入你的邮箱（用于生成ssl，绑定lets encrypt）：" email < /dev/tty
-# printf "是否创建SSL（如果需要，则请确认你已经配置好了域名解析至本服务器）：\n"
-# read -p "输入y/Y创建SSL，其它为不创建" needSsl < /dev/tty
-#
-# echo "domain: ${domain}"
-# echo "email: ${email}"
+read -p "请输入你的域名（例如xmg180.com）：" domain < /dev/tty
+read -p "请输入你的邮箱（用于生成ssl，绑定lets encrypt）：" email < /dev/tty
+printf "是否创建SSL（如果需要，则请确认你已经配置好了域名解析至本服务器）：\n"
+read -p "输入y/Y创建SSL，其它为不创建" needSsl < /dev/tty
+
+echo "domain: ${domain}"
+echo "email: ${email}"
 
 install_dir="/var/www/html"
+access_log_dir="/var/log/apache2/wp-access.log"
+error_log_dir="/var/log/apache2/wp-error.log"
 #### Creating Random WP Database Credenitals
 db_name="wp`date +%s`"
 db_user=$db_name
@@ -106,28 +108,28 @@ curl https://api.wordpress.org/secret-key/1.1/salt/ >> $install_dir/wp-config.ph
 
 
 ##### Config Apache
-# echo "<VirtualHost *:80>
-#     ServerName ${domain}
-#     ServerAlias www.${domain}
-#     ServerAdmin webmaster@localhost
-#     DocumentRoot ${install_dir}
-#     ErrorLog ${APACHE_LOG_DIR}/error.log
-#     CustomLog ${APACHE_LOG_DIR}/access.log combined
-#     <Directory ${install_dir}>
-# 	    AllowOverride All
-#     </Directory>
-# </VirtualHost>" > "/etc/apache2/sites-available/$domain.conf"
-#
-# sudo a2ensite $domain
-# sudo a2dissite 000-default && sudo a2enmod rewrite && sudo a2enmod rewrite && sudo apache2ctl configtest && sudo systemctl restart apache2
+echo "<VirtualHost *:80>
+    ServerName ${domain}
+    ServerAlias www.${domain}
+    ServerAdmin webmaster@localhost
+    DocumentRoot ${install_dir}
+    ErrorLog ${error_log_dir}
+    CustomLog ${access_log_dir} combined
+    <Directory ${install_dir}>
+	    AllowOverride All
+    </Directory>
+</VirtualHost>" > "/etc/apache2/sites-available/$domain.conf"
+
+sudo a2ensite $domain
+sudo a2dissite 000-default && sudo a2enmod rewrite && sudo a2enmod rewrite && sudo apache2ctl configtest && sudo systemctl restart apache2
 
 ##### Certbot for SSL
-# sudo apt install certbot python3-certbot-apache -y
-# sudo ufw allow 'Apache Full' && sudo ufw delete allow 'Apache'
-# if  [[ $needSsl == "y" ]] || [[ $needSsl == "Y" ]] ;
-# then
-#         sudo certbot --apache --non-interactive --no-eff-email --agree-tos --redirect -m $email --domain $domain --domain "www.$domain"
-# fi
+sudo apt install certbot python3-certbot-apache -y
+sudo ufw allow 'Apache Full' && sudo ufw delete allow 'Apache'
+if  [[ $needSsl == "y" ]] || [[ $needSsl == "Y" ]] ;
+then
+        sudo certbot --apache --non-interactive --no-eff-email --agree-tos --redirect -m $email --domain $domain --domain "www.$domain"
+fi
 
 ######Display generated passwords to log file.
 printf "===============================================\n"
@@ -150,3 +152,5 @@ echo "数据库名称 Db: " $db_name
 echo "数据库用户名 User: " $db_user
 echo "数据库密码 Password: " $db_password
 echo "Mysql管理员密码 Root Password: " $mysqlrootpass
+echo "你的服务器访问记录Apache access log: " $access_log_dir
+echo "你的服务器报错记录Apache error log: " $error_log_dir
